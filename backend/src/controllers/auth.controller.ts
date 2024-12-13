@@ -50,7 +50,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
             res.status(400).json({ message: 'Invalid user data' });
         }
     } catch (error: any) {
-        console.log("error in signup controller", error ); 
+        console.error("error in signup controller", error.message); 
         next(error);
     }
 }
@@ -86,7 +86,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
             profileImage: user.profileImage,
         });
     } catch (error: any) {
-        console.log("error in login controller", error);
+        console.error("error in login controller", error.message);
         next(error);
     }
 }
@@ -95,7 +95,7 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
         res.clearCookie("jwt");
         res.status(200).json({ message: "Logged out successfully" });   
     } catch (error: any) {
-        console.log("error in logout controller", error);
+        console.error("error in logout controller", error.message);
         next(error);
     }
 }
@@ -118,9 +118,9 @@ export const getAuthenticatedUser = async (req: Request, res: Response, next: Ne
             fullName: user.fullName,
             profileImage: user.profileImage,
         });
-        
+
     } catch (error: any) {
-        console.log("error in getAuthenticatedUser controller", error);
+        console.error("error in getAuthenticatedUser controller", error.message);
         next(error);
     }
 }

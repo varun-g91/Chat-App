@@ -18,13 +18,13 @@ const globalErrorHandler = (
     if (err instanceof AppError) {
         // Handle custom errors
         return res.status(err.statusCode || 500).json({
-            message: err.message, // Use err.message instead of the entire err object
+            error: err.message, // Use err.message instead of the entire err object
         });
     }
 
     // Handle unexpected errors
     res.status(500).json({
-        message: "An unexpected error occurred. Please try again later.",
+        error: "An unexpected error occurred. Please try again later.",
     });
 };
 
