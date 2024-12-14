@@ -8,6 +8,8 @@ import globalErrorHandler from './middleware/globalErrorHandler.js';
 const app = express();
 dotenv.config();
 
+const PORT = process.env.PORT || 5000;
+
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRoutes);
@@ -15,7 +17,7 @@ app.use('/api/messages', messageRoutes);
 app.use(globalErrorHandler);
 
 app.listen(5000, () => {
-    console.log('Server is running on port 5000');
+    console.log('Server is running on port ' + PORT);
 });
 
 // Todo: add socket.io for real-time communication

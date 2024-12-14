@@ -18,7 +18,7 @@ model User {
   username String @unique
   fullName String
   password String 
-  gender Gender
+  gender String
   profileImage String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

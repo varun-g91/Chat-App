@@ -4,50 +4,64 @@ import prisma from '../db/prisma.js';
 import { generateToken } from '../utils/generateToken.js';
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { fullName, username, password, confirmPassword, gender } = req.body;
 
-        if (!fullName || !username || !password || !confirmPassword || !gender) {
-            return res.status(400).json({ message: 'All fields are required' });
+        const { fullName, username, password, confirmPassword, gender } =
+            req.body;
+
+        if (
+            !fullName ||
+            !username ||
+            !password ||
+            !confirmPassword ||
+            !gender
+        ) {
+            return res.status(400).json({ message: "All fields are required" });
         }
 
         if (password !== confirmPassword) {
-            return res.status(400).json({ message: 'Passwords do not match' });
+            return res.status(400).json({ message: "Passwords do not match" });
         }
 
         const user = await prisma.user.findUnique({ where: { username } });
 
-         if (user) {
-            return res.status(400).json({ message: 'User already exists' });
-         }
+        if (user) {
+            return res.status(400).json({ message: "User already exists" });
+        }
 
         const salt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(password, salt);
 
+        const genderNormalized = gender.toLowerCase();
+        console.log(genderNormalized);
         const malePlaceholderImage = `https://avatar.iran.liara.run/public/boy?username=${username}`;
         const femalePlaceholderImage = `https://avatar.iran.liara.run/public/girl?username=${username}`;
+
+        const profileImage =
+            genderNormalized === "male"
+                ? malePlaceholderImage
+                : femalePlaceholderImage;
 
         const newUser = await prisma.user.create({
             data: {
                 fullName,
                 username,
                 password: hashedPassword,
-                gender,
-                profileImage: gender === 'male' ? malePlaceholderImage : femalePlaceholderImage,
+                gender: genderNormalized,
+                profileImage,
             },
         });
 
         if (newUser) {
-
             generateToken(newUser.id, res);
 
             res.status(201).json({
                 id: newUser.id,
                 username: newUser.username,
                 fullName: newUser.fullName,
-                profileImage: newUser.profileImage
+                profileImage: newUser.profileImage,
             });
         } else {
-            res.status(400).json({ message: 'Invalid user data' });
+            res.status(400).json({ message: "Invalid user data" });
         }
     } catch (error: any) {
         console.error("error in signup controller", error.message); 
