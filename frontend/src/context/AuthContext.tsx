@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Axis3DIcon } from "lucide-react";
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 
 
@@ -37,18 +38,27 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
             try {
                 const res = await axios.get('/api/auth/me');
                 if (res.status === 200) {
-                    throw new Error(res.data.message);
+                    setAuthUser(res.data);
+                } else {
+                    throw new Error(res.data.error);
                 }
-                setAuthUser(res.data);
             } catch (error) {
                 console.error(error); 
+                setAuthUser(null);
             } finally {
                 setIsLoading(false);
             }
         }
-
         fetchAuthUser();
-    })
+    }, [])
+
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center flex-col relative top-[50vh]">
+                <LoadingSpinner />
+            </div>
+        );
+    }
 
     return (
         <AuthContext.Provider value={{ authUser, setAuthUser, isLoading }}>

@@ -7,7 +7,9 @@ export const sendMessage = async (
     next: NextFunction
 ) => {
     try {
+        console.log("req.body:", req.body);
         const { message } = req.body;
+        console.log("message:", message);
         const { id: receiverId } = req.params;
         const senderId = req.user.id;
 
@@ -65,6 +67,7 @@ export const getMessages = async (
     try {
         const { id: userTOChatID } = req.params;
         const senderId = req.user.id;
+        
 
         const conversation = await prisma.conversation.findFirst({
             where: { participantIds: { hasEvery: [senderId, userTOChatID] } },

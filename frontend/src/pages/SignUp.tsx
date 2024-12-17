@@ -31,30 +31,7 @@ const SignUp = () => {
     };
 
 	const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        // Log the entire inputs object
-        console.log("Frontend Inputs:", inputs);
-
-        // Log each field
-        console.log("fullName:", inputs.fullName);
-        console.log("username:", inputs.username);
-        console.log("password:", inputs.password);
-        console.log("confirmPassword:", inputs.confirmPassword);
-        console.log("gender:", inputs.gender);
-
-        // Add some validation before calling signUp
-        if (
-            !inputs.fullName ||
-            !inputs.username ||
-            !inputs.password ||
-            !inputs.confirmPassword ||
-            !inputs.gender
-        ) {
-            console.error("Some fields are missing");
-            return;
-        }
-
+        e.preventDefault()
         signUp(inputs);
     };
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useLogin from "../hooks/useLogin";
+import toast from "react-hot-toast";
 
 interface Inputs {
     username: string;
@@ -14,9 +15,20 @@ const Login = () => {
 
 	const { loading, login } = useLogin();
 
-	const handleSubmitForm = (e: React.FormEvent) => {
+	const handleSubmitForm = async (e: React.FormEvent) => {
 		e.preventDefault();
-		login(inputs.username, inputs.password); 
+
+		try {
+            await login(inputs.username, inputs.password);
+            // Successful login is already handled with toast in useLogin
+        } catch (error) {
+            // Catch and display the error from useLogin
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error("An unexpected error occurred");
+            }
+        }
 	};
 	return (
 		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>

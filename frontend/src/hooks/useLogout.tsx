@@ -11,26 +11,21 @@ const useLogout = () => {
         setLoading(true);
         try {
             const res = await axios.get('/api/auth/logout');
-
             if (res.status >= 200 && res.status < 300) {
-                toast.success(res.data.error);
                 setAuthUser(null);
             } else {
-                toast.error(res.data.message);
-                throw new Error(res.data.message);
+                throw new Error(res.data.error);
             }
-
         } catch (error:any) {
-            
-        }
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        } 
     }
-
-    return { loading, logout }
-  return (
-    <div>
         
-    </div>
-  )
+    return { loading, logout }
 }
+
+
 
 export default useLogout
