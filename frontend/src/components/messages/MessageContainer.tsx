@@ -7,7 +7,6 @@ import { MessageCircle } from "lucide-react";
 
 const MessageContainer = () => {
 	const { selectedConversation } = useConversation();
-	console.log("selectedConversation", selectedConversation);
 	return (
 		<div className='w-full flex flex-col'>
 			{!selectedConversation ? (
