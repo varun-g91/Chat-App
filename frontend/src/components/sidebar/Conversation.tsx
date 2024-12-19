@@ -1,11 +1,20 @@
+import { useAuthContext } from "../../context/AuthContext";
+import { useSocketContext } from "../../context/SocketContext";
 import { ConversationType } from "../../types/global";
 import useConversation from "../../zustand/useConversation";
 
 const Conversation = ({ conversation, emoji }: { conversation: ConversationType, emoji: string }) => {
 	const { setSelectedConversation, selectedConversation } = useConversation();
+    const { authUser } = useAuthContext();
+    const isMe = conversation.id === authUser?.id;
 	const isSelected = selectedConversation?.id === conversation.id;
 
-	const isOnline = false;
+    const { onlineUsers} = useSocketContext();
+	const isOnline = onlineUsers.includes(conversation.id);
+
+    if (isMe) {
+        return null;
+    }
 	return (
         <>
             <div

@@ -4,8 +4,8 @@ import messageRoutes from '../src/routes/message.route.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv'
 import globalErrorHandler from './middleware/globalErrorHandler.js';
+import { app, server } from './socket/socket.js';
 
-const app = express();
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
@@ -16,7 +16,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 app.use(globalErrorHandler);
 
-app.listen(5000, () => {
+server.listen(5000, () => {
     console.log('Server is running on port ' + PORT);
 });
 
