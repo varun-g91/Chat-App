@@ -10,4 +10,8 @@ function useChatScroll(dep: any) {
             }
         })
     }, [dep]);
+
+    return ref;
 }
+
+export default useChatScroll;   
