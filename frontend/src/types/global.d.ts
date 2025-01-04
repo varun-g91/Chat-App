@@ -11,6 +11,9 @@ declare global {
         senderId: string;
         id: string;
         body: string;
-        createdAt: string
+        createdAt: string;
+        shouldShake?: boolean;
+        delivered: boolean; 
+        read: boolean; 
     };
 }
