@@ -1,17 +1,46 @@
-import { create } from "zustand";
+import { create } from 'zustand';
+import { devtools, subscribeWithSelector } from 'zustand/middleware';
 
 interface ConversationState {
-    selectedConversation: ConversationType | null;
-    setSelectedConversation: (conversation: ConversationType | null) => void;
     messages: MessageType[];
-    setMessages: (messages: MessageType[]) => void;
+    selectedConversation: any | null;
+    setMessages: (messages: MessageType[] | ((prev: MessageType[]) => MessageType[])) => void;
+    setSelectedConversation: (conversation: any) => void;
 }
 
-const useConversation = create<ConversationState>((set) => ({
-    selectedConversation: null,
-    setSelectedConversation: (conversation) => set({ selectedConversation: conversation }),
-    messages: [],
-    setMessages: (messages) => set({ messages: messages }),
-}));
+const useConversation = create<ConversationState>()(
+    subscribeWithSelector(
+        devtools(
+            (set, get) => ({
+                messages: [],
+                selectedConversation: null,
+                setMessages: (messages) => {
+                    set((state) => {
+                        const newMessages = typeof messages === 'function' 
+                            ? messages(state.messages) 
+                            : messages;
+                        
+                        console.log('[Store Debug] Updating messages:', newMessages);
+                        return { messages: newMessages };
+                    }, false, 'setMessages');
+                },
+                setSelectedConversation: (conversation) => 
+                    set({ selectedConversation: conversation }, false, 'setSelectedConversation'),
+            }),
+            {
+                name: 'conversation-store',
+                enabled: true
+            }
+        )
+    )
+);
+
+// Subscribe to state changes
+useConversation.subscribe(
+    (state) => state.messages,
+    (messages) => {
+        console.log('[Store Debug] Messages changed:', messages);
+    }
+);
 
 export default useConversation;
