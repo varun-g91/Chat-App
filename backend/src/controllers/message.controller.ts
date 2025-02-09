@@ -34,6 +34,15 @@ export const sendMessage = async (
                 body: message,
                 conversationId: conversation.id,
             },
+            include: {
+                sender: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        profileImage: true,
+                    },
+                },
+            },
         });
 
         if (newMessage) {
@@ -51,19 +60,30 @@ export const sendMessage = async (
             });
         }
 
+        console.log("New message created:", newMessage); // Debug log
+
         const receiverSocketId = getReceiverSocketId(receiverId);
-
+        
         if (receiverSocketId) {
-            io.to(receiverSocketId).emit("newMessage", newMessage)
+            // Ensure message is in the expected format
+            const messageToSend = {
+                id: newMessage.id,
+                body: newMessage.body,
+                senderId: newMessage.senderId,
+                receiverId,
+                createdAt: newMessage.createdAt,
+                sender: newMessage.sender
+            };
+            
+            console.log("Emitting message:", messageToSend); // Debug log
+            io.to(receiverSocketId).emit("newMessage", messageToSend);
         }
-
 
         res.status(201).json(newMessage);
     } catch (error: any) {
-        console.error("error in sendMessage controller", error.message);
+        console.error("Error in sendMessage controller:", error);
         next(error);
     }
-
 };
 
 export const getMessages = async (
