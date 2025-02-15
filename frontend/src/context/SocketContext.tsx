@@ -1,70 +1,77 @@
-import {
-    createContext,
-    useContext,
-    useState,
-    useEffect,
-    ReactNode,
-    useRef,
-} from "react";
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
+import { io, Socket } from "socket.io-client";
 import { useAuthContext } from "./AuthContext";
-import io, { Socket } from "socket.io-client";
 
-interface ISocketContext {
+export const SocketContext = createContext<{
     socket: Socket | null;
     onlineUsers: string[];
-}
+    isConnected: boolean;
+}>({
+    socket: null,
+    onlineUsers: [],
+    isConnected: false
+});
 
-const SocketContext = createContext<ISocketContext | undefined>(undefined);
-
-export const useSocketContext = (): ISocketContext => {
-    const context = useContext(SocketContext);
-
-    if (context === undefined) {
-        throw new Error(
-            "useSocketContext must be used within a SocketContextProvider"
-        );
-    }
-
-    return context;
-};
-
-const socketURL =
-    import.meta.env.MODE === "development" ? "http://localhost:5000" : "/";
-const SocketContextProvider = ({ children }: { children: ReactNode }) => {
-    const socketRef = useRef<Socket | null>(null);
+export const SocketContextProvider = ({ children }: { children: ReactNode }) => {
+    const { authUser } = useAuthContext();
     const [onlineUsers, setOnlineUsers] = useState<string[]>([]);
-    const { authUser, isLoading } = useAuthContext();
+    const [isConnected, setIsConnected] = useState(false);
+    const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
-        if (authUser && !isLoading) {
-            const socket = io(socketURL, {
-                query: { userId: authUser.id },
-            });
-            socketRef.current = socket;
+        if (!authUser) return;
 
-            socket.on("getOnlineUsers", (users: string[]) => {
-                setOnlineUsers(users);
-            });
+        const socket = io("http://localhost:5000", {
+            query: { userId: authUser.id },
+            transports: ['websocket', 'polling'],
+            reconnection: true,
+            reconnectionAttempts: Infinity,
+            reconnectionDelay: 1000,
+            reconnectionDelayMax: 5000,
+            timeout: 20000,
+        });
 
-            return () => {
-                socket.close();
-                socketRef.current = null;
-            };
-        } else if (!authUser && !isLoading) {
-            if (socketRef.current) {
-                socketRef.current.close();
-                socketRef.current = null;
-            }
-        }
-    }, [authUser, isLoading]);
+        socket.on("connect", () => {
+            console.log("[Socket Debug] Connected:", socket.id);
+            setIsConnected(true);
+        });
+
+        socket.on("disconnect", () => {
+            console.log("[Socket Debug] Disconnected");
+            setIsConnected(false);
+        });
+
+        socket.on("getOnlineUsers", (users: string[]) => {
+            console.log("[Socket Debug] Online users:", users);
+            setOnlineUsers(users);
+        });
+
+        socketRef.current = socket;
+
+        return () => {
+            socket.off("connect");
+            socket.off("disconnect");
+            socket.off("getOnlineUsers");
+            socket.close();
+            socketRef.current = null;
+        };
+    }, [authUser]);
 
     return (
-        <SocketContext.Provider
-            value={{ socket: socketRef.current, onlineUsers }}
-        >
+        <SocketContext.Provider value={{
+            socket: socketRef.current,
+            onlineUsers,
+            isConnected
+        }}>
             {children}
         </SocketContext.Provider>
     );
 };
 
-export default SocketContextProvider;
+export const useSocketContext = () => {
+    const context = useContext(SocketContext);
+    if (!context) {
+        throw new Error("useSocketContext must be used within SocketContextProvider");
+    }
+    return context;
+};
