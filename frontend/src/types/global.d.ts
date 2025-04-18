@@ -7,13 +7,23 @@ declare global {
         profileImage: string;
     };
 
-    type MessageType = {
-        senderId: string;
+    // type MessageType = {
+    //     senderId: string;
+    //     id: string;
+    //     body: string;
+    //     createdAt: string
+    // };
+
+    interface MessageType {
         id: string;
         body: string;
+        senderId: string;
+        receiverId: string;
         createdAt: string;
-        shouldShake?: boolean;
-        delivered: boolean; 
-        read: boolean; 
-    };
+        sender?: {
+            id: string;
+            fullName: string;
+            profileImage: string;
+        };
+    }
 }

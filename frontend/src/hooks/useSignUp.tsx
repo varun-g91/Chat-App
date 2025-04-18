@@ -19,14 +19,14 @@ const useSignUp = () => {
             });
 
             if (res.status >= 200 && res.status < 300) {
-                toast.success(res.data.message);
+                toast.success("Signup successful");
                 setAuthUser(res.data); 
             } else {
-                toast.error(res.data.error);
+                toast.error("Signup failed");
                 throw new Error(res.data.error);
             }
         } catch (error: any) {
-            toast.error(error.error);
+            toast.error("Unexpected error occurred");
             console.error(error.error);
         } finally{
             setLoading(false);

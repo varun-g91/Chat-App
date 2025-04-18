@@ -3,15 +3,12 @@ import { Axis3DIcon } from "lucide-react";
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import LoadingSpinner from "../components/LoadingSpinner";
 
-
-
 type AuthUserType = {
     id: string,
     fullName: string,
     email: string,
     gender: string,
     profileImage: string,   
-
 }
 
 const AuthContext = createContext<{
@@ -24,7 +21,7 @@ const AuthContext = createContext<{
     isLoading: true,
 });
 
-// eslint-disable-next-line react-refresh/only-export-components
+
 export const useAuthContext = () => {
     return useContext(AuthContext); 
 }
