@@ -1,19 +1,34 @@
-FROM node:20
+# Build frontend
+FROM node:23-slim AS frontend
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm install
+COPY frontend .
+RUN npm run build
 
+# Build backend
+FROM node:23-slim AS backend
 WORKDIR /app
+COPY package*.json ./
+RUN npm install
 
-COPY package.json .
+# Install OpenSSL (required by Prisma)
+RUN apt-get update -y && apt-get install -y openssl
 
-RUN yarn install
+# Copy backend files
+COPY backend ./backend
 
-COPY . .
+# Copy built frontend to backend (optional)
+COPY --from=frontend /app/frontend/dist ./backend/public
 
-WORKDIR /app/backend/prisma 
+WORKDIR /app/backend/prisma
 
 RUN npx prisma generate
 
+# Set working dir to backend
 WORKDIR /app
 
-EXPOSE 5000
+# Start backend
+CMD ["npm", "start"]
 
-CMD ["yarn", "dev"]
+EXPOSE 3000
