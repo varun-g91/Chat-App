@@ -13,16 +13,16 @@ const Message = ({ message }: { message: MessageType }) => {
     const chatClass = fromMe ? "chat-end" : "chat-start";
 
     const bubbleBg = fromMe ? "bg-blue-500" : "";
-    const shakeClass = message.shouldShake ? "shake" : "";
+    // const shakeClass = message.shouldShake ? "shake" : "";
 
     // Status indicators
-    const status = fromMe
-        ? message.read
-            ? "Read"
-            : message.delivered
-            ? "Delivered"
-            : "Sending..."
-        : "";
+    // const status = fromMe
+    //     ? message.read
+    //         ? "Read"
+    //         : message.delivered
+    //         ? "Delivered"
+    //         : "Sending..."
+    //     : "";
 
     return (
         <div className={`chat ${chatClass}`}>
@@ -32,13 +32,13 @@ const Message = ({ message }: { message: MessageType }) => {
                 </div>
             </div>
             <p
-                className={`chat-bubble text-white ${bubbleBg} ${shakeClass} text-sm md:text-md`}
+                className={`chat-bubble text-white ${bubbleBg} text-sm md:text-md`}
             >
                 {message.body}
             </p>
             <span className="chat-footer opacity-50 text-xs flex gap-1 items-center text-white">
                 {extractTime(message.createdAt)}{" "}
-                {fromMe && <span>{status}</span>}
+                {/* {fromMe && <span>{status}</span>} */}
             </span>
         </div>
     );

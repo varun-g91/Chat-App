@@ -1,6 +1,6 @@
 FROM node:20
 
-WORKDIR /app
+WORKDIR /app/frontend
 
 COPY package.json .
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 5173
 
-CMD ["npm", "run", "dev"]
+CMD ["yarn",  "dev"]
