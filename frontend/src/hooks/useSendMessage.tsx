@@ -6,7 +6,7 @@ import { useAuthContext } from "../context/AuthContext";
 
 const useSendMessage = () => {
     const [loading, setLoading] = useState(false);
-    const { messages, setMessages, selectedConversation } = useConversation();
+    const { setMessages, selectedConversation } = useConversation();
     const { authUser } = useAuthContext();
 
     const sendMessage = async (message: string) => {
@@ -18,8 +18,7 @@ const useSendMessage = () => {
             id: `${Date.now()}`, // Generate a temporary unique ID
             body: message,
             createdAt: new Date().toISOString(),
-            delivered: false, // Default to not delivered
-            read: false, // Default to unread
+            receiverId: selectedConversation.id,
         };
 
         // Access the current state of messages

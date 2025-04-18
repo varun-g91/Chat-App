@@ -10,7 +10,7 @@ import { app, server } from './socket/socket.js';
 dotenv.config();
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174'],
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'https://chat-app-client-wine-nine.vercel.app'],
     credentials: true
 }));
 

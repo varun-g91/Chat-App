@@ -1,13 +1,10 @@
-import { useState } from "react";
 import { useAuthContext } from "../../context/AuthContext";
 import { useSocketContext } from "../../context/SocketContext";
-import { ConversationType } from "../../types/global";
 import useConversation from "../../zustand/useConversation";
 
 const Conversation = ({ conversation }: { conversation: ConversationType }) => {
     const {
         setSelectedConversation,
-        resetUnreadMessages,
         selectedConversation,
     } = useConversation();
     const { authUser } = useAuthContext();
@@ -21,7 +18,6 @@ const Conversation = ({ conversation }: { conversation: ConversationType }) => {
 
     const handleSelectConversation = () => {
         setSelectedConversation(conversation);
-        resetUnreadMessages(conversation.id); // Reset unread count when the conversation is opened
     };
 
     if (isMe) return null;
@@ -42,15 +38,6 @@ const Conversation = ({ conversation }: { conversation: ConversationType }) => {
                 />
                 <p className="font-bold">{conversation.fullName}</p>
 
-                <span className="text-xs text-gray-500">
-                    {conversation.unreadCount > 0
-                        ? (
-                            <span className="bg-red-500 text-white rounded-full px-2 py-1">
-                                {conversation.unreadCount}
-                            </span>
-                        )
-                        : ""}
-                </span>
             </div>
         </div>
     );

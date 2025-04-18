@@ -1,5 +1,4 @@
 import useGetConversations from "../../hooks/useGetConversations";
-import { ConversationType } from "../../types/global";
 import Conversation from "./Conversation";
 
 const Conversations = () => {

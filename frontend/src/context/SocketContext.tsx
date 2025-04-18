@@ -18,10 +18,12 @@ export const SocketContextProvider = ({ children }: { children: ReactNode }) => 
     const [isConnected, setIsConnected] = useState(false);
     const socketRef = useRef<Socket | null>(null);
 
+    console.log(import.meta.env.VITE_API_URI)
+
     useEffect(() => {
         if (!authUser) return;
 
-        const socket = io("http://localhost:5000", {
+        const socket = io(import.meta.env.API_URI, {
             query: { userId: authUser.id },
             transports: ['websocket', 'polling'],
             reconnection: true,

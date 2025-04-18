@@ -12,7 +12,7 @@ interface ConversationState {
 const useConversation = create<ConversationState>()(
     subscribeWithSelector(
         devtools(
-            (set, get) => ({
+            (set, _get) => ({
                 messages: [],
                 selectedConversation: null,
                 setMessages: (messages) => {

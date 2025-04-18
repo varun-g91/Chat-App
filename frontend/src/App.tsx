@@ -7,7 +7,6 @@ import { Toaster } from "react-hot-toast";
 import LoadingSpinner from "./components/LoadingSpinner";
 
 function App() {
-
   const { authUser, isLoading } = useAuthContext();
   // console.log("authUser", authUser);
 
