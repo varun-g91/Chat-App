@@ -29,7 +29,7 @@ const useSendMessage = () => {
 
         try {
             const res = await axios.post(
-                `/api/messages/send/${selectedConversation?.id}`,
+                `${import.meta.env.VITE_API_URL}/api/messages/send/${selectedConversation?.id}`,
                 {
                     message: message,
                 }

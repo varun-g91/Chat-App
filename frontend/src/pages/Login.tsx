@@ -19,6 +19,7 @@ const Login = () => {
 		e.preventDefault();
 
 		try {
+			console.log("Login Inputs; ",inputs.username, inputs.password)
             await login(inputs.username, inputs.password);
             // Successful login is already handled with toast in useLogin
         } catch (error) {

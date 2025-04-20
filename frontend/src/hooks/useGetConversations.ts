@@ -11,7 +11,7 @@ const useGetConversations = () => {
             setLoading(true);
 
             try {
-                const res = await axios.get("/api/messages/conversations");
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/messages/conversations`);
                 console.log("conversations:", res.data);
 
                 if (res.data.error) {

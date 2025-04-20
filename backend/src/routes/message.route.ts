@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get('/conversations', protectRoute, getUsersForSidebar);
+router.get('/conversations',(() => console.log("getConversations called")), protectRoute, getUsersForSidebar);
 router.get('/:id', protectRoute, getMessages);
 router.post('/send/:id', protectRoute, sendMessage);
 

@@ -23,7 +23,7 @@ export const SocketContextProvider = ({ children }: { children: ReactNode }) => 
     useEffect(() => {
         if (!authUser) return;
 
-        const socket = io(import.meta.env.API_URI, {
+        const socket = io(`${import.meta.env.VITE_API_URL}`, {
             query: { userId: authUser.id },
             transports: ['websocket', 'polling'],
             reconnection: true,

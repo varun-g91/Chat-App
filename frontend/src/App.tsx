@@ -10,6 +10,7 @@ function App() {
   const { authUser, isLoading } = useAuthContext();
   // console.log("authUser", authUser);
 
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center flex-col relative top-[50vh]">

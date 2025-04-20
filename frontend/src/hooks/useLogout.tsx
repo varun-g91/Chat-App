@@ -10,7 +10,7 @@ const useLogout = () => {
     const logout = async () => {
         setLoading(true);
         try {
-            const res = await axios.get('/api/auth/logout');
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/logout`);
             if (res.status >= 200 && res.status < 300) {
                 setAuthUser(null);
             } else {

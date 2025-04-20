@@ -14,7 +14,7 @@ const useGetMessages = () => {
             setMessages([]);
 
             try {
-                const res = await axios.get(`/api/messages/${selectedConversation?.id}`);
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/messages/${selectedConversation?.id}`);
                 console.log("API response:", res.data);
                 if (res.data.error) throw new Error(res.data.error || "Failed to fetch messages");
                 setMessages(res.data);

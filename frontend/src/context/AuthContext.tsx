@@ -32,7 +32,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode })
     useEffect(() =>{
         const fetchAuthUser = async () => {
             try {
-                const res = await axios.get('/api/auth/me');
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/me`);
                 if (res.status === 200) {
                     setAuthUser(res.data);
                 } else {

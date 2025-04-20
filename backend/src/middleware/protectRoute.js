@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/AppError.js';
 import prisma from '../db/prisma.js';
-const protectRoute = async (req, _res, next) => {
+const protectRoute = async (req, res, next) => {
     try {
         const token = req.cookies.jwt;
         if (!token) {

@@ -4,9 +4,9 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "dev": "nodemon --watch backend/src --exec tsx backend/src/index.ts",
+        "dev": "nodemon --watch src --exec tsx src/index.ts",
         "build": "tsc --build tsconfig.json",
-        "start": "node backend/dist/src/index.js"
+        "start": "node dist/src/index.js"
     },
     "keywords": [],
     "author": "",
@@ -22,6 +22,7 @@
         "nodemon": "^3.1.7",
         "ts-node": "^10.9.2",
         "tsx": "^4.19.2",
+        
         "typescript": "^5.7.2"
     },
     "dependencies": {

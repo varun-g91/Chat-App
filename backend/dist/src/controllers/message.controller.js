@@ -90,7 +90,9 @@ export const getMessages = async (req, res, next) => {
     }
 };
 export const getUsersForSidebar = async (req, res, next) => {
+    console.log("getUsersForSidebar called");
     try {
+        console.log("Auth User: ", req.user);
         const authUserId = req.user.id;
         const users = await prisma.user.findMany({
             where: {

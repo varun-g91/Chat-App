@@ -10,7 +10,7 @@ const useSignUp = () => {
     const signUp = async (inputs: any) => {
         try {
             setLoading(true);
-            const res = await axios.post('/api/auth/signup', {
+            const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
                 fullName: inputs.fullName,
                 username: inputs.username,
                 password: inputs.password,
@@ -20,7 +20,7 @@ const useSignUp = () => {
 
             if (res.status >= 200 && res.status < 300) {
                 toast.success("Signup successful");
-                setAuthUser(res.data); 
+                setAuthUser(res.data);  
             } else {
                 toast.error("Signup failed");
                 throw new Error(res.data.error);
