@@ -1,9 +1,6 @@
-import useGetConversations from "../../hooks/useGetConversations";
-import { ConversationType } from "../../types/global";
 import Conversation from "./Conversation";
 
-const Conversations = () => {
-    const { conversations, loading } = useGetConversations();
+const Conversations = ({ conversations, loading }: { conversations: ConversationType[], loading: boolean }) => {
 
     return (
         <div className="py-2 flex flex-col overflow-auto">
